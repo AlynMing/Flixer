@@ -1,9 +1,9 @@
 package com.example.flixter
 
 import android.content.Context
+import android.content.res.Configuration
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -39,14 +39,22 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
 
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
         private val tvOverview = itemView.findViewById<TextView>(R.id.tvOverview)
-        private val ivPoster = itemView.findViewById<ImageView>(R.id.ivPoster)
+        private val ivMovieImg = itemView.findViewById<ImageView>(R.id.ivMovieImg)
 
         fun bind(movie: Movie) {
             tvTitle.text = movie.title
             tvOverview.text = movie.overview
+
+            val orientation = context.resources.configuration.orientation
+            val imgUrlToUse = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                movie.backdropImageUrl
+            } else {
+                movie.posterImageUrl
+            }
+            // render either the backdrop or the poster based on orientation
             Glide.with(context)
-                .load(movie.posterImageUrl)
-                .into(ivPoster)
+                .load(imgUrlToUse)
+                .into(ivMovieImg)
         }
 
     }

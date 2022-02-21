@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Kidus/AndroidStudioProjects/Flixter/app/src/main/res/layout-land/activity_main.xml" value="0.27998236331569665" />
+        <entry key="..\:/Users/Kidus/AndroidStudioProjects/Flixter/app/src/main/res/layout-land/item_movie.xml" value="0.27998236331569665" />
+        <entry key="..\:/Users/Kidus/AndroidStudioProjects/Flixter/app/src/main/res/layout-port/activity_main.xml" value="0.3307291666666667" />
         <entry key="..\:/Users/Kidus/AndroidStudioProjects/Flixter/app/src/main/res/layout/activity_main.xml" value="0.31666666666666665" />
         <entry key="..\:/Users/Kidus/AndroidStudioProjects/Flixter/app/src/main/res/layout/item_movie.xml" value="0.3307291666666667" />
       </map>
