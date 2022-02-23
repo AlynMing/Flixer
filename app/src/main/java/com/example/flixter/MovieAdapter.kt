@@ -10,6 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.module.AppGlideModule
+
+// this is needed for some of the Glide features to work
+@GlideModule
+class MyAppGlideModule : AppGlideModule() { }
 
 private const val TAG = "MovieAdapter"
 class MovieAdapter(private val context: Context, private val movies: List<Movie>)
@@ -54,6 +60,7 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
             // render either the backdrop or the poster based on orientation
             Glide.with(context)
                 .load(imgUrlToUse)
+                .placeholder(R.drawable.imagenotfound)
                 .into(ivMovieImg)
         }
 
