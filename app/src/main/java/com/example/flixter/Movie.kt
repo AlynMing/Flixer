@@ -6,6 +6,7 @@ data class Movie (
     val movieId: Int,
     val title: String,
     val overview: String,
+    val rating: Double,
     private val posterPath: String,
     private val backdropPath: String
 ) {
@@ -23,6 +24,7 @@ data class Movie (
                         movieJson.getInt("id"),
                         movieJson.getString("title"),
                         movieJson.getString("overview"),
+                        movieJson.getDouble("vote_average"),
                         movieJson.getString("poster_path"),
                         movieJson.getString("backdrop_path")
                     )

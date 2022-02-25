@@ -19,28 +19,64 @@ class MyAppGlideModule : AppGlideModule() { }
 
 private const val TAG = "MovieAdapter"
 class MovieAdapter(private val context: Context, private val movies: List<Movie>)
-    : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val POPULARMOVIECUTOFF = 7.0
+    private val NORMALMOVIE = 0
+    private val POPULARMOVIE = 1
+
 
 
 
     // Expensive operation: create a view
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.i(TAG, "onCreateViewHolder")
-        val view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false)
+        val viewHolder : RecyclerView.ViewHolder
+        val inflater = LayoutInflater.from(context)
 
-        return ViewHolder(view)
+        when (viewType) {
+            NORMALMOVIE -> {
+                val view = inflater.inflate(R.layout.item_movie, parent, false)
+                viewHolder = DefaultViewHolder(view)
+            }
+            POPULARMOVIE -> {
+                val view = inflater.inflate(R.layout.item_popular_movie, parent, false)
+                viewHolder = PopularViewHolder(view)
+            }
+            else -> {
+                Log.e("MovieAdapter", "Unhandled movie type" + viewType)
+                val view = inflater.inflate(R.layout.item_movie, parent, false)
+                viewHolder = DefaultViewHolder(view)
+            }
+        }
+
+        return viewHolder
     }
 
     // Cheap: simply bind data to an existing viewholder
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.i(TAG, "onBindViewHolder $position")
-        val movie = movies[position]
-        holder.bind(movie)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder.itemViewType) {
+            NORMALMOVIE -> {
+                (holder as DefaultViewHolder).bind(movies[position])
+            }
+            POPULARMOVIE -> {
+                (holder as PopularViewHolder).bind(movies[position])
+                Log.i("POPULAR", movies[position].toString())
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (movies[position].rating > POPULARMOVIECUTOFF) {
+            return POPULARMOVIE
+        } else {
+            return NORMALMOVIE
+        }
     }
 
     override fun getItemCount() =  movies.size
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DefaultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
@@ -64,5 +100,17 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
                 .into(ivMovieImg)
         }
 
+    }
+
+    inner class PopularViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val ivMoviePoster = itemView.findViewById<ImageView>(R.id.moviePoster)
+
+        fun bind(movie: Movie) {
+            Glide.with(context)
+                .load(movie.backdropImageUrl)
+                .placeholder(R.drawable.imagenotfound)
+                .into(ivMoviePoster)
+        }
     }
 }
